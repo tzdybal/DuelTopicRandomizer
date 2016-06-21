@@ -26,21 +26,21 @@ std::vector<std::vector<std::string>> Randomizer::getTopics(size_t groups, size_
 {
 	std::random_device rd;
 	std::mt19937 rng(rd());
+	std::uniform_int_distribution<size_t> distr;
 	
-	std::shuffle(begin(topics_), end(topics_), rng);
-
 	std::vector<std::vector<std::string>> result;
 	for (size_t g = 0; g < groups; ++g)
 	{
 		std::vector<std::string> group;
 		for (size_t d = 0; d < duels; ++d)
 		{
-			group.push_back(topics_[g*duels+d]);
+			size_t randomIndex = distr(rng, decltype(distr)::param_type(0, std::distance(begin(topics_), end(topics_))));
+			auto iterator = std::next(begin(topics_), randomIndex);
+			group.push_back(*iterator);
+			topics_.erase(iterator);
 		}
 		result.push_back(std::move(group));
 	}
-	topics_.erase(begin(topics_), begin(topics_)+groups*duels);
-
 
 	return result;
 }
