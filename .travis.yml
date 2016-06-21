@@ -1,0 +1,15 @@
+
+language: cpp
+
+compiler:
+    - clang
+    - gcc
+
+
+script:
+    - mkdir build
+    - cd build
+    - cmake .. && make
+
+sudo: required
+dist: trusty
